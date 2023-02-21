@@ -67,7 +67,7 @@ void searchString(char *string, char array[255][255], int arrayElementCount)
                     float matchperc = ((subsqLtrs * 1.0f) / (1.0f * sizeOfStr(array[i]))) * 100;
                     float conf = ((subsqLtrs * 1.0f) / (1.0f * queryStrSize)) * 100;
                     // printf("Not matched with word '%s'. Confidence was %0.3f%%\n",array[i], matchperc);
-                    printf("Not an exact match with query '%s' with word '%s. match confidence was %0.3f%% and match ratio %0.3f%%\n", string, array[i], conf, matchperc);
+                    printf("Not an exact match with query '%s' with word '%s'. match confidence was %0.3f%% and match ratio %0.3f%%\n", string, array[i], conf, matchperc);
                 }
 
                 subsqLtrs = 0;
@@ -119,42 +119,50 @@ void searchString(char *string, char array[255][255], int arrayElementCount)
 
 void printMatchingResult(char *string)
 {
-    int i = 0;
-    int tokenHit = 0;
-    char *result;
-    result = malloc(sizeof(char) * strlen(string));
-    while (string[i] != '\0' && !tokenHit)
-    {
-        char c = string[i];
-        if (c == '@')
-        {
-            char *token = malloc(sizeof(char) * strlen(string));
-            strcpy(token, string);
-
-            if (verboseResults)
-                printf("\nstrlen(token)= %d\n", strlen(&token[i])); // check if the string has enough chars to fit the token
-            if (strlen(&token[i]) < 8)
-                break;           // string is too short to contain a token, terminate
-            token[i + 8] = '\0'; // extract possible token
-            char *temp = &token[i];
-            token = temp;
-
-            // string[i+8] = '\0';
-            if (verboseResults)
-                printf("possible token match: '%s'\n", token);
-            if (strcmp(token, "@@%%!!**") == 0)
-            {
-                if (verboseResults)
-                    printf("Exact token match found in word: '%s'. start index: %d.\n", string, i);
-                result[i] = '\0';
-                break;
-            }
-        }
-        result[i] = string[i];
-        ++i;
-    }
-    printf("Match: %s\n", result);
+    char *token = strtok(string, "@@%%!!**");
+    printf("Match: %s\n", token);
 }
+
+
+// void printMatchingResult(char *string)
+// {
+//     int i = 0;
+//     int tokenHit = 0;
+//     char *result;
+//     result = malloc(sizeof(char) * strlen(string));
+//     while (string[i] != '\0' && !tokenHit)
+//     {
+//         char c = string[i];
+//         if (c == '@')
+//         {
+//             char *token = malloc(sizeof(char) * strlen(string));
+//             strcpy(token, string);
+
+//             if (verboseResults)
+//                 printf("\nstrlen(token)= %d\n", strlen(&token[i])); // check if the string has enough chars to fit the token
+//             if (strlen(&token[i]) < 8)
+//                 break;           // string is too short to contain a token, terminate
+//             token[i + 8] = '\0'; // extract possible token
+//             char *temp = &token[i];
+//             token = temp;
+
+//             // string[i+8] = '\0';
+//             if (verboseResults)
+//                 printf("possible token match: '%s'\n", token);
+//             if (strcmp(token, "@@%%!!**") == 0)
+//                 {
+//                 if (verboseResults)
+//                     printf("Exact token match found in word: '%s'. start index: %d.\n", string, i);
+//                 //result[i] = '\0';
+//                 break;
+//             }
+//         }
+//         result[i] = string[i];
+//         ++i;
+//     }
+//     result[i] = '\0';
+//     printf("Match: %s\n", result);
+// }
 
 void printCharArray(char array[255][255])
 {
